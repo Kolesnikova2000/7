@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+  <script>
+    function preloadImages(sources, callback) {
+     let counter = 0;
+
+			sources.forEach(function(item, i) {
+				let img = document.createElement('img');
+				img.src = sources[i];
+				
+				img.onload = function() 
+				{ counter++; if(counter == sources.length) callback(); };
+				
+				img.onerror = function() 
+				{ counter++; if(counter == sources.length) callback(); }
+			})   
+    }
+
+    // ---------- тест ----------
+
+    let sources = [
+      "https://en.js.cx/images-load/1.jpg",
+      "https://en.js.cx/images-load/2.jpg",
+      "https://en.js.cx/images-load/3.jpg"
+    ];
+
+    // добавляем случайные символы к ссылкам, чтобы избежать кеширования
+    for (let i = 0; i < sources.length; i++) {
+      sources[i] += '?' + Math.random();
+    }
+
+    // для каждого изображения
+    // создадим другое изображение с аналогичным src и проверим, есть ли у нас его ширина
+    function testLoaded() {
+      let widthSum = 0;
+      for (let i = 0; i < sources.length; i++) {
+        let img = document.createElement('img');
+        img.src = sources[i];
+        widthSum += img.width;
+      }
+      alert(widthSum);
+    }
+
+    // каждое изображение в разрешении 100x100, итоговая сумма их ширин должна быть 300
+    preloadImages(sources, testLoaded);
+  </script>
+
+</body>
+</html>
+
+
+Ответы на вопросы:
+1. Технологии, изученные мною в этом разделе учебника, предназначены для упращения и улучшения работы пользователя на эл. ресурсе. Например, пользователь долго работал над проектом и случайно нажал на кнопку выхода и не сохранился, в целях избежания ситуаций с несохранёнными данными, мы можем использовать событие beforeunload. С помощью атрибут defer можно указать браузеру на продолжение загрузки страницы даже в фоновом режиме, DOMContentLoaded сработает только после полной загрузки.. Атрибут asyns позволит сделать скрипт независимым, DOMContentLoaded сработает и до полной загрузки. Так же можно отслеживать загрузку абсолютно любых ресурсов, load - подскажет пользователю, что загрузка произведена успешно, error - наоборот, укажет на то, что произошла ошибка.
+2. При создании ресурса с онлайн играми я могу использовать DOMContentLoaded для того, чтобы после полной загрузки страницы браузер мог попытаться заполнить логин и пароль за пользователя (если разрешено), событие beforeunload я смогу использовать для того, чтобы пользователь смог подтвердить свой уход с сайта, т.к. возможен случайный выход и всё несохранённые данные исчезнут. 
+3. На сайте :https://e.sfu-kras.ru/login/index.php после полной прогрузки страницы, вводятся сохранённые логин и пароль. 
